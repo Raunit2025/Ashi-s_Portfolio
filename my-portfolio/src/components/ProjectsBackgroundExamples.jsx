@@ -3,7 +3,6 @@ import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Dodecahedron, Box } from '@react-three/drei';
 
-// Example 1: This one was already correct as it doesn't use hooks
 export const CrystalScene = () => (
   <div className="absolute inset-0 z-0">
     <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
@@ -20,9 +19,6 @@ export const CrystalScene = () => (
   </div>
 );
 
-
-// ==== CORRECTED Example 2: Wireframe Scene ====
-// We moved the hook and the 3D objects into this new inner component
 const WireframeContent = () => {
   const groupRef = useRef();
 
@@ -55,10 +51,6 @@ export const WireframeScene = () => {
     </div>
   );
 };
-
-
-// ==== CORRECTED Example 3: Floating Cubes Scene ====
-// We did the same here: moved the hook and objects into an inner component
 const FloatingCubesContent = () => {
   const groupRef = useRef();
 

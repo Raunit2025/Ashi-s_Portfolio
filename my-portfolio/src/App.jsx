@@ -1,4 +1,5 @@
 // src/App.jsx
+// eslint-disable-next-line no-unused-vars
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Background3D from './components/Background3D';
@@ -26,9 +27,6 @@ const Hero = ({ onViewWork }) => (
 
 function App() {
   const [currentSection, setCurrentSection] = useState('hero');
-
-  // This hook ensures that scrolling is disabled for all sections,
-  // which is correct for the conveyor belt project view.
   useEffect(() => {
     document.body.style.overflow = 'hidden';
   }, [currentSection]);

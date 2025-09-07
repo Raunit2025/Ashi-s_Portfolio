@@ -1,7 +1,7 @@
 // src/components/Projects.jsx
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
-// --- DUMMY DATA ---
 const projectsData = [
   {
     id: 1,
@@ -28,17 +28,15 @@ const projectsData = [
     imageUrl: '/project4.png',
   },
 ];
-// --------------------
 
-// Animation variants for the conveyor belt track
 const marqueeVariants = {
   animate: {
-    x: [0, -100 * projectsData.length], // Move from start to end
+    x: [0, -100 * projectsData.length], 
     transition: {
       x: {
         repeat: Infinity,
         repeatType: 'loop',
-        duration: 30, // Adjust duration for speed
+        duration: 30, 
         ease: 'linear',
       },
     },
@@ -58,10 +56,8 @@ const Projects = ({ onBack }) => {
         <p className="text-slate-400 mb-12">Hover over the belt to pause.</p>
       </div>
 
-      {/* Conveyor Belt Container */}
       <motion.div 
         className="w-full flex"
-        // This will pause the animation when the user hovers over the container
         whileHover={{ animationPlayState: 'paused' }}
       >
         <motion.div
@@ -69,7 +65,6 @@ const Projects = ({ onBack }) => {
           variants={marqueeVariants}
           animate="animate"
         >
-          {/* We render the projects twice to create the seamless loop */}
           {[...projectsData, ...projectsData].map((project, i) => (
             <motion.div
               key={`${project.id}-${i}`}
