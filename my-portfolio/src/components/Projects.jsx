@@ -1,26 +1,94 @@
 // src/components/Projects.jsx
-// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
+
+// --- DUMMY DATA ---
+const projectsData = [
+  {
+    id: 1,
+    title: 'Project Alpha',
+    category: 'Game Design',
+    imageUrl: '/project1.png',
+  },
+  {
+    id: 2,
+    title: 'Character Modeling',
+    category: '3D Art',
+    imageUrl: '/project2.png',
+  },
+  {
+    id: 3,
+    title: 'Environment Concept',
+    category: 'Art & Design',
+    imageUrl: '/project3.png',
+  },
+  {
+    id: 4,
+    title: 'Project Gamma',
+    category: 'Game Development',
+    imageUrl: '/project4.png',
+  },
+];
+// --------------------
+
+// Animation variants for the conveyor belt track
+const marqueeVariants = {
+  animate: {
+    x: [0, -100 * projectsData.length], // Move from start to end
+    transition: {
+      x: {
+        repeat: Infinity,
+        repeatType: 'loop',
+        duration: 30, // Adjust duration for speed
+        ease: 'linear',
+      },
+    },
+  },
+};
 
 const Projects = ({ onBack }) => {
   return (
     <motion.div
-      className="min-h-screen flex flex-col items-center justify-center text-center p-4"
+      className="min-h-screen w-full flex flex-col items-center justify-center overflow-hidden"
       initial={{ opacity: 0 }}
-      // Quick fade-in
       animate={{ opacity: 1, transition: { duration: 0.5 } }}
-      // Quick fade-out
       exit={{ opacity: 0, transition: { duration: 0.5 } }}
     >
-      <h1 className="text-6xl font-bold text-white mb-8">My Work</h1>
-      
-      <div className="text-slate-400">
-        <p>Project gallery will go here.</p>
+      <div className="w-full max-w-6xl mx-auto text-center">
+        <h1 className="text-6xl font-bold text-white mb-4">My Work</h1>
+        <p className="text-slate-400 mb-12">Hover over the belt to pause.</p>
       </div>
+
+      {/* Conveyor Belt Container */}
+      <motion.div 
+        className="w-full flex"
+        // This will pause the animation when the user hovers over the container
+        whileHover={{ animationPlayState: 'paused' }}
+      >
+        <motion.div
+          className="flex flex-shrink-0"
+          variants={marqueeVariants}
+          animate="animate"
+        >
+          {/* We render the projects twice to create the seamless loop */}
+          {[...projectsData, ...projectsData].map((project, i) => (
+            <motion.div
+              key={`${project.id}-${i}`}
+              className="group relative w-80 h-60 mx-4 overflow-hidden rounded-xl border border-white/20 bg-white/5 backdrop-blur-md shadow-lg flex-shrink-0"
+              whileHover={{ scale: 1.05, zIndex: 10 }}
+            >
+              <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+              <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent">
+                <h3 className="text-xl font-bold text-white">{project.title}</h3>
+                <p className="text-sm text-slate-300">{project.category}</p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
 
       <button 
         onClick={onBack}
-        className="mt-12 bg-white/10 backdrop-blur-md text-white font-bold py-3 px-8 rounded-xl border border-white/20 shadow-lg hover:bg-white/20 transition-all duration-300"
+        className="mt-16 bg-white/10 backdrop-blur-md text-white font-bold py-3 px-8 rounded-xl border border-white/20 shadow-lg hover:bg-white/20 transition-all duration-300"
       >
         Go Back
       </button>

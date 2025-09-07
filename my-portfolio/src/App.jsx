@@ -1,6 +1,5 @@
 // src/App.jsx
-import { useState } from 'react';
-// eslint-disable-next-line no-unused-vars
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Background3D from './components/Background3D';
 import Projects from './components/Projects';
@@ -9,8 +8,7 @@ const Hero = ({ onViewWork }) => (
   <motion.div
     className="min-h-screen flex items-center justify-center"
     initial={{ opacity: 0 }}
-    animate={{ opacity: 1, transition: { duration: 0.5 } }} // A quick fade-in for the initial load
-    // This makes the fade-out happen very quickly
+    animate={{ opacity: 1, transition: { duration: 0.5 } }}
     exit={{ opacity: 0, transition: { duration: 0.5 } }}
   >
     <div className="text-center max-w-4xl p-4">
@@ -28,6 +26,12 @@ const Hero = ({ onViewWork }) => (
 
 function App() {
   const [currentSection, setCurrentSection] = useState('hero');
+
+  // This hook ensures that scrolling is disabled for all sections,
+  // which is correct for the conveyor belt project view.
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+  }, [currentSection]);
 
   return (
     <main className="relative min-h-screen">
