@@ -31,13 +31,13 @@ const Stars = (props) => {
 
 const Scene = ({ isFlying }) => {
   useFrame((state) => {
-    const targetZ = isFlying ? -10 : 2;
+    const targetZ = isFlying ? -2 : 2;
     // Slower camera movement (speed changed from 0.04 to 0.02)
     state.camera.position.z = MathUtils.lerp(state.camera.position.z, targetZ, 0.02);
 
-    const targetFov = isFlying ? 90 : 75;
+    const targetFov = isFlying ? 90 : 20;
     // Slower FOV animation (speed changed from 0.04 to 0.02)
-    state.camera.fov = MathUtils.lerp(state.camera.fov, targetFov, 0.02);
+    state.camera.fov = MathUtils.lerp(state.camera.fov, targetFov, 0.001);
     
     state.camera.updateProjectionMatrix();
   });

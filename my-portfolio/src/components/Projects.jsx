@@ -7,9 +7,10 @@ const Projects = ({ onBack }) => {
     <motion.div
       className="min-h-screen flex flex-col items-center justify-center text-center p-4"
       initial={{ opacity: 0 }}
-      // The only change is simplifying the animate transition below
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      // Quick fade-in
+      animate={{ opacity: 1, transition: { duration: 0.5 } }}
+      // Quick fade-out
+      exit={{ opacity: 0, transition: { duration: 0.5 } }}
     >
       <h1 className="text-6xl font-bold text-white mb-8">My Work</h1>
       

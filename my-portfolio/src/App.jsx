@@ -9,8 +9,9 @@ const Hero = ({ onViewWork }) => (
   <motion.div
     className="min-h-screen flex items-center justify-center"
     initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
+    animate={{ opacity: 1, transition: { duration: 0.5 } }} // A quick fade-in for the initial load
+    // This makes the fade-out happen very quickly
+    exit={{ opacity: 0, transition: { duration: 0.5 } }}
   >
     <div className="text-center max-w-4xl p-4">
       <h1 className="text-6xl font-bold text-white mb-4">Ashi's Portfolio</h1>
@@ -33,7 +34,6 @@ function App() {
       <Background3D isFlying={currentSection === 'projects'} />
       
       <div className="relative z-10">
-        {/* The only change is removing mode="wait" from the line below */}
         <AnimatePresence>
           {currentSection === 'hero' && (
             <Hero key="hero" onViewWork={() => setCurrentSection('projects')} />
