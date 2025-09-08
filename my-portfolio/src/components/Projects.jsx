@@ -1,10 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import {motion, AnimatePresence, useScroll, useTransform} from "framer-motion";
 import { Canvas } from "@react-three/fiber";
 import {
   OrbitControls,
@@ -134,17 +129,34 @@ const Projects = ({ onBack }) => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef(null);
+  const rafRef = useRef(null);
 
-  // Get scroll progress (0 → 1)
-  const { scrollYProgress } = useScroll({
-    container: scrollRef,
-  });
+  // Track activeIndex from scroll position
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
 
-  // Total scrollable height in pixels
-  const totalScrollHeight = projectsData.length * window.innerHeight;
+    const handleScroll = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        const ch = container.clientHeight; // one section = 100vh
+        const scrollTop = container.scrollTop;
+        const index = Math.round(scrollTop / ch);
+        const clamped = Math.max(0, Math.min(index, projectsData.length - 1));
+        setActiveIndex(clamped);
+      });
+    };
 
-  // Map scroll progress to a pixel offset for the dot
-  const dotY = useTransform(scrollYProgress, [0, 1], [0, totalScrollHeight]);
+    handleScroll(); // init
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  // Dot snapping position
+  const dotY = activeIndex * window.innerHeight + window.innerHeight / 2;
 
   return (
     <motion.div
@@ -207,10 +219,9 @@ const Projects = ({ onBack }) => {
         </div>
       </div>
 
-      {/* Right Scrollable Pane */}
-      <div
+<div
         ref={scrollRef}
-        className="w-1/2 overflow-y-scroll relative scroll-smooth hide-scrollbar"
+        className="w-1/2 overflow-y-scroll relative scroll-smooth hide-scrollbar snap-y snap-mandatory"
       >
         {/* Background timeline */}
         <div
@@ -218,23 +229,24 @@ const Projects = ({ onBack }) => {
           style={{ height: `${projectsData.length * 100}vh` }}
         />
 
-        {/* Glowing foreground timeline */}
+        {/* Glowing timeline */}
         <motion.div
           className="absolute top-0 left-1/4 w-1 -translate-x-1/2 bg-cyan-400 shadow-[0_0_15px_#22d3ee]"
-          style={{ height: dotY }}
+          animate={{ height: dotY }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         />
 
         {/* Moving dot */}
         <motion.div
-          className="absolute top-0 left-1/4 -translate-x-1/2 w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_20px_#22d3ee]"
-          style={{ y: dotY }}
+          className="absolute left-1/4 -translate-x-1/2 w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_20px_#22d3ee]"
+          animate={{ y: dotY }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         />
 
-        {projectsData.map((project, index) => (
+        {projectsData.map((project) => (
           <motion.div
             key={project.id}
-            className="h-screen flex items-center"
-            onViewportEnter={() => setActiveIndex(index)}
+            className="h-screen flex items-center snap-start"
           >
             <div className="relative w-full flex items-center">
               <div className="absolute left-1/4 -translate-x-1/2">
