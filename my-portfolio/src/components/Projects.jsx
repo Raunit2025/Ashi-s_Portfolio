@@ -1,56 +1,89 @@
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useScroll } from 'framer-motion';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Box, Sphere, Torus, Dodecahedron } from '@react-three/drei';
+import { useState, useRef, useEffect } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { Canvas } from "@react-three/fiber";
+import {
+  OrbitControls,
+  Box,
+  Sphere,
+  Torus,
+  Dodecahedron,
+} from "@react-three/drei";
 
 const projectsData = [
   {
     id: 1,
-    title: 'Project Alpha: The Lost Kingdom',
-    category: 'Game Design & Development',
-    imageUrl: '/project1.png',
-    shortDescription: 'A 3D adventure game with a focus on exploration and puzzle-solving. Built with Unreal Engine.',
-    longDescription: 'The Lost Kingdom is a third-person adventure game that challenges players to uncover the secrets of a fallen civilization. My role involved level design, creating puzzle mechanics, and implementing character controls. The project emphasized atmospheric storytelling through environmental design.',
-    technologies: ['Unreal Engine', 'Blender', 'C++'],
-    model: <Torus args={[1, 0.2, 16, 100]} rotation={[Math.PI / 2, 0.3, 0]}>
-            <meshStandardMaterial color="#8A2BE2" roughness={0.3} metalness={0.9} />
-           </Torus>
+    title: "Project Alpha: The Lost Kingdom",
+    category: "Game Design & Development",
+    imageUrl: "/project1.png",
+    shortDescription:
+      "A 3D adventure game with a focus on exploration and puzzle-solving. Built with Unreal Engine.",
+    longDescription:
+      "The Lost Kingdom is a third-person adventure game that challenges players to uncover the secrets of a fallen civilization. My role involved level design, creating puzzle mechanics, and implementing character controls. The project emphasized atmospheric storytelling through environmental design.",
+    technologies: ["Unreal Engine", "Blender", "C++"],
+    model: (
+      <Torus args={[1, 0.2, 16, 100]} rotation={[Math.PI / 2, 0.3, 0]}>
+        <meshStandardMaterial color="#8A2BE2" roughness={0.3} metalness={0.9} />
+      </Torus>
+    ),
   },
   {
     id: 2,
     title: 'Cyborg "Helios": Character Model',
-    category: '3D Art & Hard Surface Modeling',
-    imageUrl: '/project2.png',
-    shortDescription: 'High-poly character model created in ZBrush and textured in Substance Painter.',
-    longDescription: 'Helios is a high-fidelity 3D character designed for a next-gen sci-fi title. The process involved sculpting intricate details in ZBrush, retopologizing for animation in Maya, and creating realistic PBR textures in Substance Painter. The goal was to create a visually striking and believable robotic character.',
-    technologies: ['ZBrush', 'Maya', 'Substance Painter', 'Marmoset Toolbag'],
-    model: <Dodecahedron args={[1.2, 0]}>
-             <meshStandardMaterial color="#40E0D0" roughness={0.1} metalness={0.95} emissive="#003333" emissiveIntensity={0.5} />
-           </Dodecahedron>
+    category: "3D Art & Hard Surface Modeling",
+    imageUrl: "/project2.png",
+    shortDescription:
+      "High-poly character model created in ZBrush and textured in Substance Painter.",
+    longDescription:
+      "Helios is a high-fidelity 3D character designed for a next-gen sci-fi title. The process involved sculpting intricate details in ZBrush, retopologizing for animation in Maya, and creating realistic PBR textures in Substance Painter. The goal was to create a visually striking and believable robotic character.",
+    technologies: ["ZBrush", "Maya", "Substance Painter", "Marmoset Toolbag"],
+    model: (
+      <Dodecahedron args={[1.2, 0]}>
+        <meshStandardMaterial
+          color="#40E0D0"
+          roughness={0.1}
+          metalness={0.95}
+          emissive="#003333"
+          emissiveIntensity={0.5}
+        />
+      </Dodecahedron>
+    ),
   },
   {
     id: 3,
-    title: 'Whispering Wilds: Environment Concept',
-    category: 'Art & Design',
-    imageUrl: '/project3.png',
-    shortDescription: 'A stylized environment concept for a fantasy RPG, designed in Blender and Photoshop.',
-    longDescription: 'This project focused on establishing the visual style and mood for a fantasy world. I created a modular set of assets in Blender, allowing for rapid prototyping of lush, overgrown environments. The final scene was rendered and painted over in Photoshop to achieve a Ghibli-inspired aesthetic.',
-    technologies: ['Blender', 'Photoshop', 'Unreal Engine'],
-    model: <Box args={[1.5, 1.5, 1.5]}>
-            <meshStandardMaterial color="#32CD32" wireframe />
-           </Box>
+    title: "Whispering Wilds: Environment Concept",
+    category: "Art & Design",
+    imageUrl: "/project3.png",
+    shortDescription:
+      "A stylized environment concept for a fantasy RPG, designed in Blender and Photoshop.",
+    longDescription:
+      "This project focused on establishing the visual style and mood for a fantasy world. I created a modular set of assets in Blender, allowing for rapid prototyping of lush, overgrown environments. The final scene was rendered and painted over in Photoshop to achieve a Ghibli-inspired aesthetic.",
+    technologies: ["Blender", "Photoshop", "Unreal Engine"],
+    model: (
+      <Box args={[1.5, 1.5, 1.5]}>
+        <meshStandardMaterial color="#32CD32" wireframe />
+      </Box>
+    ),
   },
   {
     id: 4,
-    title: 'Project Gamma: Gravity Shift',
-    category: 'Game Development',
-    imageUrl: '/project4.png',
-    shortDescription: 'A 2D platformer with a unique gravity-shifting mechanic, developed in Unity.',
-    longDescription: 'Gravity Shift is a fast-paced 2D puzzle-platformer where players manipulate gravity to navigate complex levels. I was the sole developer, responsible for programming the core mechanics, designing 30 unique levels, and creating all the pixel art assets. The game was praised for its innovative and challenging gameplay.',
-    technologies: ['Unity', 'C#', 'Aseprite'],
-    model: <Sphere args={[1, 32, 32]}>
-             <meshStandardMaterial color="#FFD700" roughness={0.2} metalness={0.8} />
-           </Sphere>
+    title: "Project Gamma: Gravity Shift",
+    category: "Game Development",
+    imageUrl: "/project4.png",
+    shortDescription:
+      "A 2D platformer with a unique gravity-shifting mechanic, developed in Unity.",
+    longDescription:
+      "Gravity Shift is a fast-paced 2D puzzle-platformer where players manipulate gravity to navigate complex levels. I was the sole developer, responsible for programming the core mechanics, designing 30 unique levels, and creating all the pixel art assets. The game was praised for its innovative and challenging gameplay.",
+    technologies: ["Unity", "C#", "Aseprite"],
+    model: (
+      <Sphere args={[1, 32, 32]}>
+        <meshStandardMaterial color="#FFD700" roughness={0.2} metalness={0.8} />
+      </Sphere>
+    ),
   },
 ];
 
@@ -69,16 +102,28 @@ const ProjectModal = ({ project, onClose }) => (
       exit={{ scale: 0.9, y: 50 }}
       onClick={(e) => e.stopPropagation()}
     >
-      <img src={project.imageUrl} alt={project.title} className="w-full h-auto max-h-[400px] object-cover rounded-lg mb-6 shadow-2xl" />
+      <img
+        src={project.imageUrl}
+        alt={project.title}
+        className="w-full h-auto max-h-[400px] object-cover rounded-lg mb-6 shadow-2xl"
+      />
       <h2 className="text-4xl font-bold text-white mb-2">{project.title}</h2>
       <h4 className="text-xl text-cyan-300 mb-4">{project.category}</h4>
       <p className="text-lg text-gray-300 mb-6">{project.longDescription}</p>
       <div className="flex flex-wrap gap-2">
-        {project.technologies.map(tech => (
-            <span key={tech} className="bg-cyan-900/50 text-cyan-200 py-1 px-3 rounded-full text-sm">{tech}</span>
+        {project.technologies.map((tech) => (
+          <span
+            key={tech}
+            className="bg-cyan-900/50 text-cyan-200 py-1 px-3 rounded-full text-sm"
+          >
+            {tech}
+          </span>
         ))}
       </div>
-      <button onClick={onClose} className="mt-8 bg-white/10 text-white py-2 px-6 rounded-lg hover:bg-white/20 transition-colors">
+      <button
+        onClick={onClose}
+        className="mt-8 bg-white/10 text-white py-2 px-6 rounded-lg hover:bg-white/20 transition-colors"
+      >
         Close
       </button>
     </motion.div>
@@ -90,8 +135,16 @@ const Projects = ({ onBack }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef(null);
 
-  // Get the scrollY position in pixels from the scrollable container.
-  const { scrollY } = useScroll({ container: scrollRef });
+  // Get scroll progress (0 → 1)
+  const { scrollYProgress } = useScroll({
+    container: scrollRef,
+  });
+
+  // Total scrollable height in pixels
+  const totalScrollHeight = projectsData.length * window.innerHeight;
+
+  // Map scroll progress to a pixel offset for the dot
+  const dotY = useTransform(scrollYProgress, [0, 1], [0, totalScrollHeight]);
 
   return (
     <motion.div
@@ -110,44 +163,71 @@ const Projects = ({ onBack }) => {
               <motion.group
                 key={activeIndex}
                 initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } }}
-                exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.3, ease: 'easeIn' } }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  transition: { duration: 0.5, ease: "easeOut" },
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.5,
+                  transition: { duration: 0.3, ease: "easeIn" },
+                }}
               >
                 {projectsData[activeIndex].model}
               </motion.group>
             </AnimatePresence>
-            <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
+            <OrbitControls
+              enableZoom={false}
+              autoRotate
+              autoRotateSpeed={0.5}
+            />
           </Canvas>
         </div>
         <div className="text-center h-1/3 p-4 flex flex-col justify-center w-full max-w-md">
-           <AnimatePresence mode="wait">
-             <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0, transition: { delay: 0.2, duration: 0.5 } }}
-                exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
-             >
-              <h2 className="text-3xl font-bold text-white mb-2">{projectsData[activeIndex].title}</h2>
-              <p className="text-lg text-cyan-400">{projectsData[activeIndex].category}</p>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                transition: { delay: 0.2, duration: 0.5 },
+              }}
+              exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
+            >
+              <h2 className="text-3xl font-bold text-white mb-2">
+                {projectsData[activeIndex].title}
+              </h2>
+              <p className="text-lg text-cyan-400">
+                {projectsData[activeIndex].category}
+              </p>
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
 
       {/* Right Scrollable Pane */}
-      <div ref={scrollRef} className="w-1/2 overflow-y-scroll relative scroll-smooth hide-scrollbar">
-        {/*
-          This is the static timeline line. It extends the full length of the scrollable content.
-        */}
-        <div className="absolute left-1/4 w-1 bg-white/10 -translate-x-1/2 glowing-line" style={{ height: `${projectsData.length * 100}vh` }} />
-        
-        {/*
-          Removed 'top-0' to fix the conflict with 'y' transform. Now the glowing dot's
-          position is entirely controlled by the scroll motion value.
-        */}
-        <motion.div 
-            style={{ y: scrollY }}
-            className="absolute left-1/4 -translate-x-1/2 w-4 h-4 rounded-full bg-cyan-400 z-10 glowing-dot"
+      <div
+        ref={scrollRef}
+        className="w-1/2 overflow-y-scroll relative scroll-smooth hide-scrollbar"
+      >
+        {/* Background timeline */}
+        <div
+          className="absolute top-0 left-1/4 w-1 bg-white/10 -translate-x-1/2"
+          style={{ height: `${projectsData.length * 100}vh` }}
+        />
+
+        {/* Glowing foreground timeline */}
+        <motion.div
+          className="absolute top-0 left-1/4 w-1 -translate-x-1/2 bg-cyan-400 shadow-[0_0_15px_#22d3ee]"
+          style={{ height: dotY }}
+        />
+
+        {/* Moving dot */}
+        <motion.div
+          className="absolute top-0 left-1/4 -translate-x-1/2 w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_20px_#22d3ee]"
+          style={{ y: dotY }}
         />
 
         {projectsData.map((project, index) => (
@@ -157,30 +237,37 @@ const Projects = ({ onBack }) => {
             onViewportEnter={() => setActiveIndex(index)}
           >
             <div className="relative w-full flex items-center">
-                <div className="absolute left-1/4 -translate-x-1/2">
-                    <motion.button 
-                        onClick={() => setSelectedProject(project)}
-                        className="w-8 h-8 rounded-full bg-white/20 border-2 border-white/30 glowing-dot-container flex items-center justify-center"
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
-                    >
-                        <div className="glowing-dot" />
-                    </motion.button>
-                </div>
-                <div className="pl-[calc(25%_+_2.5rem)] pr-16 w-full">
-                    <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ root: scrollRef, amount: 0.6 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h3 className="text-4xl font-bold text-white mb-4">{project.title}</h3>
-                        <p className="text-gray-300 text-lg mb-6">{project.shortDescription}</p>
-                        <button onClick={() => setSelectedProject(project)} className="text-cyan-400 font-semibold hover:text-white transition-colors">
-                            View Details &rarr;
-                        </button>
-                    </motion.div>
-                </div>
+              <div className="absolute left-1/4 -translate-x-1/2">
+                <motion.button
+                  onClick={() => setSelectedProject(project)}
+                  className="w-8 h-8 rounded-full bg-white/20 border-2 border-white/30 glowing-dot-container flex items-center justify-center"
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <div className="glowing-dot" />
+                </motion.button>
+              </div>
+              <div className="pl-[calc(25%_+_2.5rem)] pr-16 w-full">
+                <motion.div
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ root: scrollRef, amount: 0.6 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <h3 className="text-4xl font-bold text-white mb-4">
+                    {project.title}
+                  </h3>
+                  <p className="text-gray-300 text-lg mb-6">
+                    {project.shortDescription}
+                  </p>
+                  <button
+                    onClick={() => setSelectedProject(project)}
+                    className="text-cyan-400 font-semibold hover:text-white transition-colors"
+                  >
+                    View Details &rarr;
+                  </button>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         ))}
@@ -188,7 +275,10 @@ const Projects = ({ onBack }) => {
 
       <AnimatePresence>
         {selectedProject && (
-          <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+          <ProjectModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+          />
         )}
       </AnimatePresence>
 
