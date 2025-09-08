@@ -1,5 +1,4 @@
 // src/App.jsx
-// eslint-disable-next-line no-unused-vars
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Background3D from './components/Background3D';
@@ -28,20 +27,38 @@ const Hero = ({ onViewWork }) => (
 function App() {
   const [currentSection, setCurrentSection] = useState('hero');
   useEffect(() => {
+    // We handle scrolling inside the Projects component, so we can keep the body overflow hidden.
     document.body.style.overflow = 'hidden';
-  }, [currentSection]);
+  }, []);
 
   return (
-    <main className="relative min-h-screen">
+    <main className="relative h-screen w-screen bg-black">
       <Background3D isFlying={currentSection === 'projects'} />
       
-      <div className="relative z-10">
-        <AnimatePresence>
+      <div className="relative z-10 h-full w-full">
+        <AnimatePresence mode="wait">
           {currentSection === 'hero' && (
-            <Hero key="hero" onViewWork={() => setCurrentSection('projects')} />
+            <motion.div
+              key="hero"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Hero onViewWork={() => setCurrentSection('projects')} />
+            </motion.div>
           )}
           {currentSection === 'projects' && (
-            <Projects key="projects" onBack={() => setCurrentSection('hero')} />
+             <motion.div
+              key="projects"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="h-full w-full"
+            >
+              <Projects onBack={() => setCurrentSection('hero')} />
+            </motion.div>
           )}
         </AnimatePresence>
       </div>

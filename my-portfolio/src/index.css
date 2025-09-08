@@ -1,6 +1,64 @@
+@import "tailwindcss";
+
 body {
   background-color: #000;
-  overflow: hidden;
+  color: white;
+  /* overflow: hidden; Prevent body scroll, scrolling is handled inside component */
 }
 
-@import "tailwindcss";
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
+.glowing-line {
+  box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #8A2BE2, 0 0 40px #8A2BE2;
+  background: #8A2BE2;
+  animation: glow-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow-pulse {
+  from {
+    box-shadow: 0 0 10px #fff, 0 0 20px #8A2BE2, 0 0 30px #8A2BE2;
+  }
+  to {
+    box-shadow: 0 0 20px #fff, 0 0 30px #40E0D0, 0 0 40px #40E0D0;
+  }
+}
+
+.glowing-dot-container {
+  z-index: 10;
+}
+
+.glowing-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #8A2BE2;
+  animation: glow-dot-pulse 2s ease-in-out infinite alternate;
+  transition: all 0.3s ease;
+}
+
+.glowing-dot-container:hover .glowing-dot {
+    box-shadow: 0 0 10px #fff, 0 0 20px #40E0D0, 0 0 30px #40E0D0;
+}
+
+
+@keyframes glow-dot-pulse {
+    from {
+        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #8A2BE2;
+        transform: scale(1);
+    }
+    to {
+        box-shadow: 0 0 10px #fff, 0 0 20px #40E0D0, 0 0 30px #40E0D0;
+        transform: scale(1.1);
+    }
+}
