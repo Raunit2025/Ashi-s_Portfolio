@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Box, Sphere, Torus, Dodecahedron } from '@react-three/drei';
 
@@ -89,9 +89,9 @@ const Projects = ({ onBack }) => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef(null);
-  const { scrollYProgress } = useScroll({ container: scrollRef });
 
-  const glowHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  // Get the scrollY position in pixels from the scrollable container.
+  const { scrollY } = useScroll({ container: scrollRef });
 
   return (
     <motion.div
@@ -136,8 +136,19 @@ const Projects = ({ onBack }) => {
 
       {/* Right Scrollable Pane */}
       <div ref={scrollRef} className="w-1/2 overflow-y-scroll relative scroll-smooth hide-scrollbar">
-        <div className="absolute top-0 left-1/4 w-1 bg-white/10 h-full -translate-x-1/2" />
-        <motion.div style={{ height: glowHeight }} className="absolute top-0 left-1/4 w-1 glowing-line -translate-x-1/2" />
+        {/*
+          This is the static timeline line. It extends the full length of the scrollable content.
+        */}
+        <div className="absolute top-0 left-1/4 w-1 bg-white/10 -translate-x-1/2" style={{ height: `${projectsData.length * 100}vh` }} />
+        
+        {/*
+          Removed 'top-0' to fix the conflict with 'y' transform. Now the glowing dot's
+          position is entirely controlled by the scroll motion value.
+        */}
+        <motion.div 
+            style={{ y: scrollY }}
+            className="absolute left-1/4 -translate-x-1/2 w-4 h-4 rounded-full bg-cyan-400 z-10 glowing-dot"
+        />
 
         {projectsData.map((project, index) => (
           <motion.div
