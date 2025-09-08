@@ -139,7 +139,7 @@ const Projects = ({ onBack }) => {
         {/*
           This is the static timeline line. It extends the full length of the scrollable content.
         */}
-        <div className="absolute top-0 left-1/4 w-1 bg-white/10 -translate-x-1/2" style={{ height: `${projectsData.length * 100}vh` }} />
+        <div className="absolute left-1/4 w-1 bg-white/10 -translate-x-1/2 glowing-line" style={{ height: `${projectsData.length * 100}vh` }} />
         
         {/*
           Removed 'top-0' to fix the conflict with 'y' transform. Now the glowing dot's
