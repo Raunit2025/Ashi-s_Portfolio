@@ -1,15 +1,17 @@
 // src/App.jsx
-import { useState, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import Background3D from './components/Background3D';
-import Skills from './components/Skills';
+import { useState, useEffect } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Canvas } from '@react-three/fiber'
+
+import BackgroundScene from './components/Background3D'
+import Skills from './components/Skills'
 
 const Hero = ({ onViewSkills }) => (
   <motion.div
     className="min-h-screen flex items-center justify-center"
     initial={{ opacity: 0 }}
-    animate={{ opacity: 1, transition: { duration: 0.5 } }}
-    exit={{ opacity: 0, transition: { duration: 0.5 } }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
   >
     <div className="text-center max-w-4xl p-4">
       <h1 className="text-6xl font-bold text-white mb-4">Ashi's Portfolio</h1>
@@ -22,47 +24,59 @@ const Hero = ({ onViewSkills }) => (
       </button>
     </div>
   </motion.div>
-);
+)
 
 function App() {
-  const [currentSection, setCurrentSection] = useState('hero');
+  const [currentSection, setCurrentSection] = useState('hero')
+  const [activeIndex, setActiveIndex] = useState(0)
+
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
-  }, []);
+    document.body.style.overflow = 'hidden'
+  }, [])
+
+  const isSkillsVisible = currentSection === 'skills'
 
   return (
     <main className="relative h-screen w-screen bg-black">
-      <Background3D isFlying={currentSection === 'skills'} />
-      
+      {/* 3D Starfield */}
+      <div className="fixed inset-0 z-0">
+        <Canvas camera={{ position: [0, 0, 2], fov: 200 }}>
+          <BackgroundScene isFlying={isSkillsVisible} />
+        </Canvas>
+      </div>
+
+      {/* Foreground UI */}
       <div className="relative z-10 h-full w-full">
         <AnimatePresence mode="wait">
-          {currentSection === 'hero' && (
+          {!isSkillsVisible && (
             <motion.div
               key="hero"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
             >
               <Hero onViewSkills={() => setCurrentSection('skills')} />
             </motion.div>
           )}
-          {currentSection === 'skills' && (
-             <motion.div
+          {isSkillsVisible && (
+            <motion.div
               key="skills"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
               className="h-full w-full"
             >
-              <Skills onBack={() => setCurrentSection('hero')} />
+              <Skills
+                onBack={() => setCurrentSection('hero')}
+                setActiveIndex={setActiveIndex}
+                activeIndex={activeIndex}
+              />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
     </main>
-  );
+  )
 }
 
-export default App;
+export default App
