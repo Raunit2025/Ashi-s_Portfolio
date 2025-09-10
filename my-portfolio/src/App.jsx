@@ -1,10 +1,10 @@
 // src/App.jsx
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Background3D from './components/Background3D';
-import Projects from './components/Projects';
+import Skills from './components/Skills';
 
-const Hero = ({ onViewWork }) => (
+const Hero = ({ onViewSkills }) => (
   <motion.div
     className="min-h-screen flex items-center justify-center"
     initial={{ opacity: 0 }}
@@ -15,10 +15,10 @@ const Hero = ({ onViewWork }) => (
       <h1 className="text-6xl font-bold text-white mb-4">Ashi's Portfolio</h1>
       <p className="text-xl text-gray-400 mb-8">3D Game Designer & Artist</p>
       <button
-        onClick={onViewWork}
+        onClick={onViewSkills}
         className="bg-white/10 backdrop-blur-md text-white font-bold py-3 px-8 rounded-xl border border-white/20 shadow-lg hover:bg-white/20 transition-all duration-300"
       >
-        View My Work
+        View My Skills
       </button>
     </div>
   </motion.div>
@@ -27,13 +27,12 @@ const Hero = ({ onViewWork }) => (
 function App() {
   const [currentSection, setCurrentSection] = useState('hero');
   useEffect(() => {
-    // We handle scrolling inside the Projects component, so we can keep the body overflow hidden.
     document.body.style.overflow = 'hidden';
   }, []);
 
   return (
     <main className="relative h-screen w-screen bg-black">
-      <Background3D isFlying={currentSection === 'projects'} />
+      <Background3D isFlying={currentSection === 'skills'} />
       
       <div className="relative z-10 h-full w-full">
         <AnimatePresence mode="wait">
@@ -45,19 +44,19 @@ function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <Hero onViewWork={() => setCurrentSection('projects')} />
+              <Hero onViewSkills={() => setCurrentSection('skills')} />
             </motion.div>
           )}
-          {currentSection === 'projects' && (
+          {currentSection === 'skills' && (
              <motion.div
-              key="projects"
+              key="skills"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
               className="h-full w-full"
             >
-              <Projects onBack={() => setCurrentSection('hero')} />
+              <Skills onBack={() => setCurrentSection('hero')} />
             </motion.div>
           )}
         </AnimatePresence>
