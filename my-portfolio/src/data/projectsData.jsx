@@ -16,6 +16,12 @@ export const projectsData = [
     ),
     imageRender: "https://placehold.co/1200x800/1a1a1a/ffffff?text=Sci-Fi+Crate+Render",
     imageWireframe: "https://placehold.co/1200x800/e0e0e0/000000?text=Wireframe+View",
+    gallery: [
+      "/project1.png",
+      "/project2.png",
+      "/project3.png",
+      "/project4.png",
+    ],
   },
   {
     id: 2,
@@ -35,7 +41,12 @@ export const projectsData = [
     ),
     imageRender: "https://placehold.co/1200x800/1a1a1a/ffffff?text=Creature+Render",
     imageWireframe: "https://placehold.co/1200x800/e0e0e0/000000?text=Wireframe+View",
+    gallery: [
+      "/project1.png",
+      "/project2.png",
+      "/project3.png",
+      "/project4.png",
+    ],
   },
   // ... (Add imageRender and imageWireframe to other projects as needed)
 ];
-

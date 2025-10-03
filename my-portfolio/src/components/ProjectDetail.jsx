@@ -78,6 +78,29 @@ const ProjectDetail = ({ project, onClose }) => {
               ))}
             </div>
           </motion.div>
+
+          {/* Gallery Section */}
+          {project.gallery && (
+            <motion.div
+              className="my-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.6 } }}
+            >
+              <h2 className="text-2xl font-semibold mb-4 text-cyan-400">Gallery</h2>
+              <div className="grid grid-cols-1 gap-4">
+                {project.gallery.map((image, index) => (
+                  <motion.div
+                    key={index}
+                    className="overflow-hidden rounded-lg"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  >
+                    <img src={image} alt={`${project.title} - Screenshot ${index + 1}`} className="w-full h-auto object-cover" />
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
         </div>
       </div>
     </motion.div>
@@ -85,4 +108,3 @@ const ProjectDetail = ({ project, onClose }) => {
 };
 
 export default ProjectDetail;
-

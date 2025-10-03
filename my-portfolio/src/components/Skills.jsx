@@ -10,6 +10,7 @@ import {
 import { skillsData } from "../data/skillsData.jsx"
 import SkillCard from "./SkillCard"
 import Timeline from "./Timeline"
+import BackButton from "./BackButton" // Import the new component
 
 const Skills = ({ onBack, setActiveIndex, activeIndex, onSkillClick }) => {
   const scrollRef = useRef(null)
@@ -159,12 +160,8 @@ const Skills = ({ onBack, setActiveIndex, activeIndex, onSkillClick }) => {
         ))}
       </div>
 
-      <button
-        onClick={onBack}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md text-white font-bold py-3 px-8 rounded-xl border border-white/20 shadow-lg hover:bg-white/20 transition-all duration-300 z-20"
-      >
-        Go Back
-      </button>
+      {/* Use the BackButton component */}
+      <BackButton onClick={onBack} text="Go Back" />
     </div>
   )
 }

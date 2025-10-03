@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import ModelViewerContent from './ModelViewer.jsx';
 import ProjectDetail from './ProjectDetail.jsx';
 import { projectsData } from '../data/projectsData';
+import BackButton from './BackButton'; // Import the new component
 
 const Projects = ({ onBack, selectedSkillId }) => {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -36,12 +37,9 @@ const Projects = ({ onBack, selectedSkillId }) => {
           ))}
         </div>
       </div>
-      <button
-        onClick={onBack}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md text-white font-bold py-3 px-8 rounded-xl border border-white/20 shadow-lg hover:bg-white/20 transition-all duration-300 z-20"
-      >
-        Back to Skills
-      </button>
+      
+      {/* Use the BackButton component */}
+      <BackButton onClick={onBack} text="Back to Skills" />
 
       <AnimatePresence>
         {selectedProject && (
@@ -56,4 +54,3 @@ const Projects = ({ onBack, selectedSkillId }) => {
 };
 
 export default Projects;
-

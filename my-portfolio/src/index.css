@@ -90,3 +90,35 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
+
+.glass-button {
+  background-color: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(8px); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.glass-button:hover {
+  background-color: rgba(255, 255, 255, 0.15); 
+  transform: translateY(-2px);
+}
+
+/* NEW: Scrollbar for the about/contact panels (vertical) */
+.styled-scrollbar-vertical::-webkit-scrollbar {
+  width: 8px;
+}
+
+.styled-scrollbar-vertical::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.styled-scrollbar-vertical::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.styled-scrollbar-vertical {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.2);
+}

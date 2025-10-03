@@ -27,7 +27,7 @@ const Stars = () => {
         <PointMaterial
           transparent
           color="#ffffff"
-          size={0.005}
+          size={0.003}
           sizeAttenuation
           depthWrite={false}
         />
@@ -42,7 +42,7 @@ const BackgroundScene = ({ isFlying }) => {
     state.camera.position.z = MathUtils.lerp(state.camera.position.z, targetZ, 0.015)
 
     const targetFov = isFlying ? 90 : 30
-    state.camera.fov = MathUtils.lerp(state.camera.fov, targetFov, 0.0015)
+    state.camera.fov = MathUtils.lerp(state.camera.fov, targetFov, 0.011)
 
     state.camera.position.y = MathUtils.lerp(state.camera.position.y, 0, 0.05)
     state.camera.updateProjectionMatrix()

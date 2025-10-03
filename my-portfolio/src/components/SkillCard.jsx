@@ -1,6 +1,8 @@
 import React from "react";
 
-const SkillCard = ({ skill, onClick }) => {
+// OPTIMIZATION: Wrapped component in React.memo to prevent re-renders
+// if its props (the 'skill' object) haven't changed.
+const SkillCard = React.memo(({ skill, onClick }) => {
   return (
     <div
       className="bg-white/10 p-8 rounded-2xl w-full max-w-lg 
@@ -19,6 +21,6 @@ const SkillCard = ({ skill, onClick }) => {
       </p>
     </div>
   );
-};
+});
 
 export default SkillCard;
