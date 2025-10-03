@@ -1,4 +1,3 @@
-// src/components/Skills.jsx
 import React, { useRef, useEffect, useState, useMemo } from "react"
 import {
   motion,
@@ -12,7 +11,7 @@ import { skillsData } from "../data/skillsData.jsx"
 import SkillCard from "./SkillCard"
 import Timeline from "./Timeline"
 
-const Skills = ({ onBack, setActiveIndex, activeIndex }) => {
+const Skills = ({ onBack, setActiveIndex, activeIndex, onSkillClick }) => {
   const scrollRef = useRef(null)
   const pathRef = useRef(null)
 
@@ -146,6 +145,7 @@ const Skills = ({ onBack, setActiveIndex, activeIndex }) => {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.25, ease: "easeOut" }}
                 className="pointer-events-auto"
+                onClick={() => onSkillClick(skillsData[activeIndex].id)}
               >
                 <SkillCard skill={skillsData[activeIndex]} />
               </motion.div>

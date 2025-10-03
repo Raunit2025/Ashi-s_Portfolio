@@ -1,12 +1,12 @@
-// src/components/SkillCard.jsx
 import React from "react";
 
-const SkillCard = ({ skill }) => {
+const SkillCard = ({ skill, onClick }) => {
   return (
     <div
       className="bg-white/10 p-8 rounded-2xl w-full max-w-lg 
                  backdrop-blur-md border border-white/20 shadow-xl 
-                 text-center mx-auto"
+                 text-center mx-auto cursor-pointer"
+      onClick={onClick}
     >
       <h2 className="text-3xl font-bold text-white mb-2">
         {skill.title}
