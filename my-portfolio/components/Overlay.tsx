@@ -1,128 +1,145 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { PROJECTS } from '../constants';
+import { GoogleGenAI } from "@google/genai";
 
-interface OverlayProps {
+export interface OverlayProps {
   wireframeMode: boolean;
   setWireframeMode: (val: boolean) => void;
+  onBackToTop?: () => void;
 }
 
-const Overlay: React.FC<OverlayProps> = ({ wireframeMode, setWireframeMode }) => {
+const Overlay: React.FC<OverlayProps> = ({ wireframeMode, setWireframeMode, onBackToTop }) => {
+  const [aiAnalysis, setAiAnalysis] = useState<Record<string, string>>({});
+  const [isAnalyzing, setIsAnalyzing] = useState<string | null>(null);
+
+  const analyzeProject = async (projectId: string, title: string) => {
+    // If we already have the analysis, just toggle wireframe mode
+    if (aiAnalysis[projectId]) {
+      setWireframeMode(!wireframeMode);
+      return;
+    }
+
+    setIsAnalyzing(projectId);
+    setWireframeMode(true);
+
+    try {
+      // Re-initialize AI client per request for key freshness as per guidelines
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const response = await ai.models.generateContent({
+        model: 'gemini-3-flash-preview',
+        contents: `Act as a senior technical artist. Provide a concise (2 sentences) technical breakdown of the architectural complexity for a project named "${title}". Use heavy technical industry jargon like 'sub-d modeling', 'atlas texturing', 'draw call optimization', and 'occlusion culling'.`,
+      });
+      
+      const technicalText = response.text || "Analysis complete.";
+      setAiAnalysis(prev => ({ ...prev, [projectId]: technicalText }));
+    } catch (error) {
+      console.error("AI Analysis failed", error);
+      setAiAnalysis(prev => ({ ...prev, [projectId]: "Error retrieving technical diagnostics. System offline." }));
+    } finally {
+      setIsAnalyzing(null);
+    }
+  };
+
   return (
     <div className="w-screen pointer-events-none text-white select-none">
       
-      {/* Section 1: Hero */}
       <section className="h-screen w-full flex flex-col items-center justify-center p-12 text-center">
-        <div className="max-w-2xl pointer-events-auto">
-          <p className="font-mono text-cyan-400 text-sm tracking-[0.3em] uppercase mb-4 opacity-70">Portfolio / Deployment</p>
-          <h2 className="text-6xl md:text-8xl font-extrabold tracking-tighter uppercase mb-6 leading-[0.9]">
-            Architecting <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">Virtual Worlds</span>
+        <div className="max-w-4xl pointer-events-auto">
+          <p className="font-mono text-blue-400 text-xs tracking-[0.6em] uppercase mb-8 opacity-60">Archives // Senior Environment Artist</p>
+          <h2 className="text-7xl md:text-[10rem] font-black tracking-tighter uppercase mb-8 leading-[0.8] italic">
+            Architect <br /> 
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-purple-600">
+              Virtual_Space
+            </span>
           </h2>
-          <p className="text-gray-400 text-lg md:text-xl font-light max-w-lg mx-auto leading-relaxed">
-            Senior Environment Artist & Level Designer focused on high-fidelity AAA game assets and cinematic scrollytelling.
-          </p>
-          <div className="mt-12 animate-bounce">
-            <span className="font-mono text-xs tracking-widest text-gray-500 uppercase">Scroll to Initialize Data</span>
+          <div className="flex flex-col items-center gap-6 animate-bounce opacity-40 mt-12">
+             <span className="font-mono text-[9px] tracking-[0.8em] text-white uppercase">Link_Start</span>
+             <div className="w-[1px] h-16 bg-gradient-to-b from-white to-transparent" />
           </div>
         </div>
       </section>
 
-      {/* Section 2: Project 1 */}
-      <section className="h-screen w-full flex flex-col justify-center p-12 md:p-32">
-        <div className="max-w-xl pointer-events-auto bg-black/40 backdrop-blur-md p-8 border-l-4 border-cyan-500">
-          <p className="font-mono text-cyan-500 text-sm mb-2">01. PROJECT_NEON_CITY</p>
-          <h3 className="text-4xl font-bold uppercase mb-4 tracking-tight">Modular Cyber Structure</h3>
-          <p className="text-gray-300 mb-6 leading-relaxed">
-            A complex modular building kit optimized for urban sprawling. Features high-density mesh modeling and custom PBR material pipelines.
-          </p>
-          
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="border border-white/10 p-4">
-              <span className="block text-[10px] font-mono text-gray-500 uppercase">Tris</span>
-              <span className="text-xl font-mono">12,450</span>
-            </div>
-            <div className="border border-white/10 p-4">
-              <span className="block text-[10px] font-mono text-gray-500 uppercase">Texture Res</span>
-              <span className="text-xl font-mono">4K PBR</span>
-            </div>
-          </div>
-
-          <button 
-            onClick={() => setWireframeMode(!wireframeMode)}
-            className={`px-6 py-3 font-mono text-xs uppercase tracking-widest transition-all duration-300 border ${wireframeMode ? 'bg-cyan-500 text-black border-cyan-500' : 'bg-transparent text-white border-white/20 hover:border-cyan-500'}`}
+      {PROJECTS.map((project, index) => (
+        <section 
+          key={project.id} 
+          className={`h-screen w-full flex flex-col justify-center p-8 md:p-32 ${index % 2 === 0 ? 'items-start' : 'items-end'}`}
+        >
+          <div 
+            className={`max-w-xl pointer-events-auto bg-black bg-opacity-80 backdrop-filter backdrop-blur-3xl p-10 border border-white border-opacity-5 rounded-sm shadow-2xl transition-all duration-700 hover:border-blue-500 hover:border-opacity-50 ${
+              index % 2 === 0 ? 'border-l-4 border-blue-500' : 'border-r-4 border-blue-500 text-right'
+            }`}
           >
-            {wireframeMode ? 'Disable Topology View' : 'Inspect Topology (Wireframe)'}
-          </button>
-        </div>
-      </section>
+            <p className="font-mono text-[10px] text-blue-400 tracking-[0.4em] mb-4 uppercase">
+              Entry_ID: {project.id} // SEC_A
+            </p>
+            <h3 className="text-5xl font-black uppercase mb-6 tracking-tighter leading-none italic">
+              {project.title.replace(/_/g, ' ')}
+            </h3>
+            <p className="text-gray-400 mb-8 leading-relaxed text-base font-light">
+              {project.description}
+            </p>
 
-      {/* Section 3: Project 2 */}
-      <section className="h-screen w-full flex flex-col justify-center items-end p-12 md:p-32">
-        <div className="max-w-xl pointer-events-auto bg-black/40 backdrop-blur-md p-8 border-r-4 border-amber-500 text-right">
-          <p className="font-mono text-amber-500 text-sm mb-2">02. ORGANIC_SYNTHESIS</p>
-          <h3 className="text-4xl font-bold uppercase mb-4 tracking-tight">Kinetic Character Rig</h3>
-          <p className="text-gray-300 mb-6 leading-relaxed">
-            Procedural deformation study using custom vertex shaders. Designed for real-time physics interaction in open-world environments.
-          </p>
-          
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="border border-white/10 p-4 text-left">
-              <span className="block text-[10px] font-mono text-gray-500 uppercase">Joints</span>
-              <span className="text-xl font-mono">152</span>
+            {aiAnalysis[project.id] && (
+              <div className="mb-8 p-4 bg-blue-500 bg-opacity-5 border border-blue-500 border-opacity-20 rounded font-mono text-[10px] text-blue-300 leading-relaxed italic animate-pulse">
+                <span className="block mb-2 font-bold opacity-50">AI_TECHNICAL_ASSESSMENT</span>
+                {aiAnalysis[project.id]}
+              </div>
+            )}
+            
+            <div className={`grid grid-cols-2 gap-4 mb-8 ${index % 2 !== 0 ? 'text-left' : ''}`}>
+              <div className="bg-white bg-opacity-5 p-4 border border-white border-opacity-5">
+                <span className="block text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">Density</span>
+                <span className="text-lg font-mono text-white">{project.tris}</span>
+              </div>
+              <div className="bg-white bg-opacity-5 p-4 border border-white border-opacity-5">
+                <span className="block text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">Pipeline</span>
+                <span className="text-lg font-mono text-white">{project.texture}</span>
+              </div>
             </div>
-            <div className="border border-white/10 p-4 text-left">
-              <span className="block text-[10px] font-mono text-gray-500 uppercase">Draw Calls</span>
-              <span className="text-xl font-mono">1</span>
-            </div>
-          </div>
 
-          <button 
-            onClick={() => setWireframeMode(!wireframeMode)}
-            className={`px-6 py-3 font-mono text-xs uppercase tracking-widest transition-all duration-300 border ${wireframeMode ? 'bg-amber-500 text-black border-amber-500' : 'bg-transparent text-white border-white/20 hover:border-amber-500'}`}
-          >
-            {wireframeMode ? 'Hide Geometry' : 'Show Bone Hierarchy'}
-          </button>
-        </div>
-      </section>
-
-      {/* Section 4: Project 3 */}
-      <section className="h-screen w-full flex flex-col justify-center items-center p-12">
-        <div className="max-w-2xl pointer-events-auto bg-black/60 backdrop-blur-xl p-12 border border-red-500/30 text-center rounded-sm">
-          <p className="font-mono text-red-500 text-sm mb-2">03. ARCHIVE_PROP</p>
-          <h3 className="text-5xl font-extrabold uppercase mb-6 tracking-tighter">Monolith Prop Design</h3>
-          <p className="text-gray-300 mb-10 leading-relaxed text-lg">
-            A high-fidelity environmental asset utilizing Nanite-level detailing techniques. Baked using industry-standard raytracing workflows.
-          </p>
-          
-          <div className="flex flex-wrap justify-center gap-6 mb-12">
-             <div className="text-center">
-                <span className="block text-[10px] font-mono text-gray-500 uppercase mb-1">Workflow</span>
-                <span className="text-sm font-bold bg-white/10 px-3 py-1 rounded">High-to-Low</span>
-             </div>
-             <div className="text-center">
-                <span className="block text-[10px] font-mono text-gray-500 uppercase mb-1">Engine</span>
-                <span className="text-sm font-bold bg-white/10 px-3 py-1 rounded">UE5 / Unity</span>
-             </div>
-             <div className="text-center">
-                <span className="block text-[10px] font-mono text-gray-500 uppercase mb-1">LODs</span>
-                <span className="text-sm font-bold bg-white/10 px-3 py-1 rounded">5 Levels</span>
-             </div>
-          </div>
-
-          <div className="flex justify-center gap-4">
-            <button className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-mono text-xs uppercase tracking-[0.2em] transition-all">
-              Request Technical Docs
-            </button>
-            <button className="px-8 py-4 border border-white/20 hover:border-white text-white font-mono text-xs uppercase tracking-[0.2em] transition-all">
-              Contact Designer
+            <button
+              type="button"
+              onClick={() => analyzeProject(project.id, project.title)}
+              className={`group flex items-center gap-4 px-10 py-5 font-mono text-[10px] uppercase tracking-[0.3em] transition-all border ${
+                wireframeMode 
+                  ? 'bg-blue-500 text-black border-blue-500' 
+                  : 'bg-white bg-opacity-5 text-white border-white border-opacity-20 hover:border-blue-500 hover:text-blue-400'
+              } ${index % 2 !== 0 ? 'ml-auto' : ''}`}
+            >
+              <div className={`w-2 h-2 rounded-full ${isAnalyzing === project.id ? 'bg-white animate-ping' : 'bg-blue-500'}`} />
+              {isAnalyzing === project.id ? 'Running Diagnostic...' : (wireframeMode ? 'Release View' : 'Analyze Topology')}
             </button>
           </div>
+        </section>
+      ))}
+
+      <section className="h-screen w-full flex flex-col items-center justify-center p-8 text-center bg-black">
+        <div className="max-w-2xl pointer-events-auto border border-white border-opacity-5 p-20 rounded-sm">
+          <p className="font-mono text-[10px] text-blue-400 tracking-[0.5em] uppercase mb-8">System: Ready</p>
+          <h2 className="text-6xl md:text-8xl font-black tracking-tighter uppercase mb-12 leading-none">
+            Forge the <br /> <span className="text-blue-500">Unseen</span>
+          </h2>
+          
+          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-16">
+            <a
+              href="mailto:contact@novacore.arch"
+              className="px-12 py-6 bg-white text-black font-mono text-[11px] font-black uppercase tracking-[0.4em] transition-all hover:bg-blue-500 hover:text-black"
+            >
+              Request_Access
+            </a>
+            <button
+              type="button"
+              onClick={onBackToTop}
+              className="px-12 py-6 border border-white border-opacity-20 hover:border-blue-500 text-white font-mono text-[11px] uppercase tracking-[0.4em] transition-all"
+            >
+              Reset_Seq
+            </button>
+          </div>
+
+          <div className="font-mono text-[8px] uppercase tracking-[1em] text-white/20">End_Of_Archive</div>
         </div>
       </section>
-
-      {/* Footer Info */}
-      <div className="fixed bottom-6 right-6 font-mono text-[9px] text-gray-600 uppercase tracking-widest pointer-events-none">
-        Copyright &copy; 2024 Nova Systems Inc. // All Rights Reserved
-      </div>
     </div>
   );
 };
