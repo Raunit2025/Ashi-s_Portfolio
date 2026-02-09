@@ -15,13 +15,10 @@ interface AssetViewerProps {
 const AssetViewer: React.FC<AssetViewerProps> = ({ type, wireframe, color, accentColor, modelPath, scale = 1 }) => {
   const gltf = useGLTF(modelPath, true);
   const scene = useMemo(() => {
-    const root = gltf.scene ?? gltf.scenes?.[0];
-    return root ? root.clone(true) : null;
-  }, [gltf.scene, gltf.scenes]);
+    return gltf.scene.clone(true);
+  }, [gltf.scene]);
 
   useEffect(() => {
-    if (!scene) return;
-
     scene.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return;
 
