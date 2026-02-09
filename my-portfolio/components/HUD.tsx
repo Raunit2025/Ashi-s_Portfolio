@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 const HUD: React.FC = () => {
-  const [logs, setLogs] = useState<string[]>(["[SYS] Initializing Nova Core...", "[SYS] Neural Link Established."]);
+  const [logs, setLogs] = useState<string[]>(["[SYS] Initializing Ashi Portfolio...", "[SYS] Creative Link Established."]);
 
   useEffect(() => {
     const systemMessages = [
@@ -29,11 +29,11 @@ const HUD: React.FC = () => {
           <div className="w-1.5 h-8 bg-cyan-500 shadow-[0_0_10px_cyan]" />
           <div>
             <h1 className="text-xl font-mono font-black tracking-tighter text-white uppercase leading-none">
-              Nova <span className="text-cyan-500">Core</span> <span className="text-white/20 text-[10px] align-top">v2.5</span>
+              Ashi <span className="text-cyan-500">Saxena</span> <span className="text-white/20 text-[10px] align-top">Portfolio</span>
             </h1>
             <div className="flex items-center gap-2 mt-1">
               <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-              <p className="text-[9px] font-mono text-cyan-500/60 uppercase tracking-[0.3em]">System: Active // High-Fidelity</p>
+              <p className="text-[9px] font-mono text-cyan-500/60 uppercase tracking-[0.3em]">System: Active // Game Artist</p>
             </div>
           </div>
         </div>
@@ -47,9 +47,9 @@ const HUD: React.FC = () => {
           ))}
         </div>
         <div className="font-mono text-[8px] text-white/20 uppercase tracking-widest">
-          Lat: 37.77 / Long: -122.41<br/>
-          Env: Production_Stage_01<br/>
-          &copy; 2025 Nova Creative Lab
+          Lat: 26.22 / Long: 78.18<br/>
+          Env: Portfolio_Stage_01<br/>
+          &copy; 2025 Ashi Saxena
         </div>
       </div>
 
