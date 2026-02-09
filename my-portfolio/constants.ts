@@ -174,7 +174,6 @@ export const PROJECTS: ProjectData[] = [
     color: '#f97316',
     accent: '#fb923c',
     type: 'torus',
-    modelPath: '/models/asset4.glb',
     position: [-14, -6, -18],
     scale: 2.8
   },
@@ -189,7 +188,6 @@ export const PROJECTS: ProjectData[] = [
     color: '#ef4444',
     accent: '#f87171',
     type: 'sphere',
-    modelPath: '/models/asset5.glb',
     position: [14, -8, -16],
     scale: 2.4
   }
