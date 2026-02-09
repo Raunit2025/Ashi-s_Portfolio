@@ -10,11 +10,13 @@ export interface ProjectData {
   id: string;
   title: string;
   description: string;
-  tris: string;
-  texture: string;
+  timeline: string;
+  tools: string;
+  focus: string;
   color: string;
   accent: string;
   type: 'box' | 'sphere' | 'torus';
+  modelPath?: string;
   position: [number, number, number];
   scale: number;
 }

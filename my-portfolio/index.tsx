@@ -7,9 +7,10 @@ if (!rootElement) {
   throw new Error("Could not find root element to mount to");
 }
 
-// In standard Vite environments, this is the safest way to initialize.
-// The "container already passed to createRoot" often happens if double scripts are loaded.
-const root = ReactDOM.createRoot(rootElement);
+type RootContainer = typeof ReactDOM & { __root?: ReactDOM.Root };
+const rootContainer = ReactDOM as RootContainer;
+const root = rootContainer.__root ?? ReactDOM.createRoot(rootElement);
+rootContainer.__root = root;
 
 root.render(
   <React.StrictMode>
