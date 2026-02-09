@@ -8,24 +8,17 @@ interface AssetViewerProps {
   wireframe: boolean;
   color: string;
   accentColor: string;
-  modelPath?: string;
+  modelPath: string;
   scale?: number;
 }
 
-const GLTFAsset: React.FC<{
-  modelPath: string;
-  wireframe: boolean;
-  accentColor: string;
-}> = ({ modelPath, wireframe, accentColor }) => {
+const AssetViewer: React.FC<AssetViewerProps> = ({ type, wireframe, color, accentColor, modelPath, scale = 1 }) => {
   const gltf = useGLTF(modelPath, true);
   const scene = useMemo(() => {
-    const root = gltf.scene ?? gltf.scenes?.[0];
-    return root ? root.clone(true) : null;
-  }, [gltf.scene, gltf.scenes]);
+    return gltf.scene.clone(true);
+  }, [gltf.scene]);
 
   useEffect(() => {
-    if (!scene) return;
-
     scene.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return;
 
@@ -53,16 +46,10 @@ const GLTFAsset: React.FC<{
     });
   }, [accentColor, scene, wireframe]);
 
-  if (!scene) return null;
-  return <primitive object={scene} />;
-};
-
-const AssetViewer: React.FC<AssetViewerProps> = ({ type, wireframe, color, accentColor, modelPath, scale = 1 }) => {
-
   return (
     <group scale={scale}>
-      {modelPath ? (
-        <GLTFAsset modelPath={modelPath} wireframe={wireframe} accentColor={accentColor} />
+      {modelPath && scene ? (
+        <primitive object={scene} />
       ) : (
         <mesh castShadow receiveShadow>
           {type === 'box' && <boxGeometry args={[1.5, 1.5, 1.5]} />}

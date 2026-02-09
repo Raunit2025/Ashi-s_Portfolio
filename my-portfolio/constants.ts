@@ -144,7 +144,7 @@ export const PROJECTS: ProjectData[] = [
     color: '#22c55e',
     accent: '#4ade80',
     type: 'sphere',
-    modelPath: undefined,
+    modelPath: '/models/asset2.glb',
     position: [12, 0, -8],
     scale: 3
   },
@@ -159,7 +159,7 @@ export const PROJECTS: ProjectData[] = [
     color: '#a855f7',
     accent: '#c084fc',
     type: 'box',
-    modelPath: undefined,
+    modelPath: '/models/asset3.glb',
     position: [0, -12, 0],
     scale: 3.2
   },
@@ -174,7 +174,6 @@ export const PROJECTS: ProjectData[] = [
     color: '#f97316',
     accent: '#fb923c',
     type: 'torus',
-    modelPath: undefined,
     position: [-14, -6, -18],
     scale: 2.8
   },
@@ -189,7 +188,6 @@ export const PROJECTS: ProjectData[] = [
     color: '#ef4444',
     accent: '#f87171',
     type: 'sphere',
-    modelPath: undefined,
     position: [14, -8, -16],
     scale: 2.4
   }
