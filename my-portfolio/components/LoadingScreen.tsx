@@ -10,7 +10,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ progress, visible }) => {
   if (!visible && progress >= 100) return null;
 
   const steps = [
-    { label: 'Initializing Core', done: progress > 10 },
+    { label: 'Initializing Portfolio', done: progress > 10 },
     { label: 'Compiling Shaders', done: progress > 40 },
     { label: 'Loading Geometry', done: progress > 70 },
     { label: 'Link Established', done: progress >= 100 },
@@ -32,7 +32,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ progress, visible }) => {
           <div className="w-4 h-4 bg-cyan-500 animate-ping rounded-full absolute opacity-20" />
           <div className="w-3 h-3 bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.8)] rounded-sm" />
           <h2 className="font-mono text-xl font-bold tracking-tighter text-white uppercase">
-            Nova <span className="text-cyan-500">Systems</span>
+            Ashi <span className="text-cyan-500">Saxena</span>
           </h2>
         </div>
 
