@@ -16,6 +16,7 @@ export interface ProjectData {
   color: string;
   accent: string;
   type: 'box' | 'sphere' | 'torus';
+  modelPath: string;
   position: [number, number, number];
   scale: number;
 }

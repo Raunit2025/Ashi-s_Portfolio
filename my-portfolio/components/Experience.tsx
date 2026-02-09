@@ -61,6 +61,7 @@ const Experience: React.FC<ExperienceProps> = ({ wireframeMode }) => {
               wireframe={wireframeMode} 
               color={project.color}
               accentColor={project.accent}
+              modelPath={project.modelPath}
               scale={project.scale}
             />
           </Float>

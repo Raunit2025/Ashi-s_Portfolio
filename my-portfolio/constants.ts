@@ -129,6 +129,7 @@ export const PROJECTS: ProjectData[] = [
     color: '#0ea5e9',
     accent: '#38bdf8',
     type: 'torus',
+    modelPath: '/models/asset1.glb',
     position: [-12, 0, -8],
     scale: 2.5
   },
@@ -143,6 +144,7 @@ export const PROJECTS: ProjectData[] = [
     color: '#22c55e',
     accent: '#4ade80',
     type: 'sphere',
+    modelPath: '/models/asset2.glb',
     position: [12, 0, -8],
     scale: 3
   },
@@ -157,6 +159,7 @@ export const PROJECTS: ProjectData[] = [
     color: '#a855f7',
     accent: '#c084fc',
     type: 'box',
+    modelPath: '/models/asset3.glb',
     position: [0, -12, 0],
     scale: 3.2
   },
