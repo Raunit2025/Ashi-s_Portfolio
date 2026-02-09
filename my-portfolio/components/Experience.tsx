@@ -61,6 +61,7 @@ const Experience: React.FC<ExperienceProps> = ({ wireframeMode }) => {
               wireframe={wireframeMode} 
               color={project.color}
               accentColor={project.accent}
+              modelPath={project.modelPath}
               scale={project.scale}
             />
           </Float>
@@ -68,8 +69,6 @@ const Experience: React.FC<ExperienceProps> = ({ wireframeMode }) => {
             position={[0, project.scale + 1.5, 0]}
             fontSize={0.4}
             color={project.color}
-            // Use a more reliable font URL or local fallback
-            font="https://cdn.jsdelivr.net/gh/googlefonts/jetbrainsmono@main/fonts/webfonts/JetBrainsMono-Bold.woff2"
             fillOpacity={0.4}
             anchorX="center"
             anchorY="middle"

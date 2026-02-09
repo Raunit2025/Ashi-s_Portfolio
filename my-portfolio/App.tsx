@@ -6,7 +6,7 @@ import Experience from './components/Experience';
 import Overlay from './components/Overlay';
 import LoadingScreen from './components/LoadingScreen';
 import HUD from './components/HUD';
-import { LOADING_MIN_MS } from './constants';
+import { LOADING_MIN_MS, SCROLL_PAGES } from './constants';
 
 /** Simple progress connector for the Canvas */
 const ProgressTracker: React.FC<{ onProgress: (p: number) => void }> = ({ onProgress }) => {
@@ -71,7 +71,7 @@ const App: React.FC = () => {
           <Environment preset="night" />
           
           <Suspense fallback={null}>
-            <ScrollControls pages={6} damping={0.25} infinite={false}>
+            <ScrollControls pages={SCROLL_PAGES} damping={0.25} infinite={false}>
               {/* 3D Experience Logic */}
               <Experience wireframeMode={wireframeMode} />
               
